@@ -7,6 +7,7 @@
  * @list: list of arguments.
  *
  * Return: Precision.
+ * this will print precisions for printing
  */
 int get_precision(const char *format, int *i, va_list list)
 {
