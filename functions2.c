@@ -1,188 +1,216 @@
+/* Title: functions2.c */
+/* include header */
 #include "main.h"
 
 /**
- * print_pointer - Prints the value of a pointer variable
- * @types: List a of arguments
- * @buffer: Buffer array to handle print
- * @flags:  Calculates active flags
- * @width: get width
- * @precision: Precision specification
- * @size: Size specifier
- * Return: Number of chars printed.
- * this will print pointers
+ * print_pointer - function that prints the value of
+ * a pointer variable
+ * @types: variadic function List
+ * @buffer: container for formatted output
+ * @flags:  integer that gets the active flags that control string formatting
+ * @width: this is the width specifier
+ * @precision: this is the precision specifier
+ * @size: this is the size specifier
+ * main contribution: partner 1
+ *
+ * Return: unsigned number in upper hexadecimal notation
  */
+
 int print_pointer(va_list types, char buffer[],
 	int flags, int width, int precision, int size)
 {
-	char extra_c = 0, padd = ' ';
-	int ind = BUFF_SIZE - 2, length = 2, padd_start = 1; /* length=2, for '0x' */
-	unsigned long num_addrs;
-	char map_to[] = "0123456789abcdef";
-	void *addrs = va_arg(types, void *);
+	/* variable declaration and initialization */
+	int ind = BUFF_SIZE - 2;
+	int pad_init = 1, len = 2;
+	char char_extra = 0, map_to[] = "0123456789abcdef", pad = ' ';
+	unsigned long num_address;
+	void *address = va_arg(types, void *);
 
+	/* macro expansion */
 	UNUSED(width);
 	UNUSED(size);
 
-	if (addrs == NULL)
-		return (write(1, "(nil)", 5));
-
-	buffer[BUFF_SIZE - 1] = '\0';
-	UNUSED(precision);
-
-	num_addrs = (unsigned long)addrs;
-
-	while (num_addrs > 0)
+	if (address == NULL)
 	{
-		buffer[ind--] = map_to[num_addrs % 16];
-		num_addrs /= 16;
-		length++;
+		return (write(1, "(nil)", 5)); /* output 5 bytes to the stdout */
+	}
+	buffer[BUFF_SIZE - 1] = '\0';
+
+	UNUSED(precision);
+	num_address = (unsigned long)address;
+	while (num_address > 0)
+	{
+		buffer[ind--] = map_to[num_address % 16];
+		num_address /= 16;
+		len++;
 	}
 
-	if ((flags & F_ZERO) && !(flags & F_MINUS))
-		padd = '0';
-	if (flags & F_PLUS)
-		extra_c = '+', length++;
-	else if (flags & F_SPACE)
-		extra_c = ' ', length++;
-
+	if ((flags & ZERO_FLAG) && !(flags & MINUS_FLAG))
+		pad = '0';
+	if (flags & PLUS_FLAG)
+	{
+		char_extra = '+', len++;
+	} else if (flags & SPACE_FLAG)
+	{
+		char_extra = ' ', len++;
+	}
 	ind++;
-
-	/*return (write(1, &buffer[i], BUFF_SIZE - i - 1));*/
-	return (write_pointer(buffer, ind, length,
-		width, flags, padd, extra_c, padd_start));
+	return (write_pointer(buffer, ind, len,
+		width, flags, pad, char_extra, pad_init));
 }
 
 /**
- * print_non_printable - Prints ascii codes in hexa of non printable chars
- * @types: Lista of arguments
- * @buffer: Buffer array to handle print
- * @flags:  Calculates active flags
- * @width: get width
- * @precision: Precision specification
- * @size: Size specifier
- * Return: Number of chars printed
- * prints non printables
+ * print_non_printable - function that prints ascii codes in hexa of
+ * non printable characters
+ * @types: variadic function List
+ * @buffer: container for formatted output
+ * @flags:  integer that gets the active flags that control string formatting
+ * @width: this is the width specifier
+ * @precision: this is the precision specifier
+ * @size: this is the size specifier
+ * main contribution: partner 1
+ *
+ * Return: unsigned int of non-printable characters
  */
+
 int print_non_printable(va_list types, char buffer[],
 	int flags, int width, int precision, int size)
 {
-	int i = 0, offset = 0;
-	char *str = va_arg(types, char *);
+	/* variable declaration and initialization */
+	int index1 = 0;
+	int off_set = 0;
+	char *s = va_arg(types, char *);
 
+	/* macro expansion / casting*/
 	UNUSED(flags);
 	UNUSED(width);
 	UNUSED(precision);
 	UNUSED(size);
 
-	if (str == NULL)
-		return (write(1, "(null)", 6));
-
-	while (str[i] != '\0')
+	/* checking for null value */
+	if (s == NULL)
 	{
-		if (is_printable(str[i]))
-			buffer[i + offset] = str[i];
-		else
-			offset += append_hexa_code(str[i], buffer, i + offset);
-
-		i++;
+		return (write(1, "(null)", 6)); /* output 6 bytes to stdout*/
 	}
+	while (s[index1] != '\0')
+	{
+		if (is_printable(s[index1]))
+		{
+			buffer[index1 + off_set] = s[index1];
+		} else
+		{
+			off_set += append_hexa_code(s[index1], buffer, index1 + off_set);
+		}
+		index1++;
+	}
+	buffer[index1 + off_set] = '\0';
 
-	buffer[i + offset] = '\0';
-
-	return (write(1, buffer, i + offset));
+	return (write(1, buffer, index1 + off_set)); /* outputs i + offset 2 stdout*/
 }
 
+
 /**
- * print_reverse - Prints reverse string.
- * @types: Lista of arguments
- * @buffer: Buffer array to handle print
- * @flags:  Calculates active flags
- * @width: get width
- * @precision: Precision specification
- * @size: Size specifier
- * Return: Numbers of chars printed
- * this will print rwverse strings
+ * print_reverse - function that prints string in reverse
+ * @types: variadic function List
+ * @buffer: container for formatted output
+ * @flags:  integer that gets the active flags that control string formatting
+ * @width: this is the width specifier
+ * @precision: this is the precision specifier
+ * @size: this is the size specifier
+ * main contribution: partner 1
+ *
+ * Return: unsigned int of non-printable characters
  */
 
 int print_reverse(va_list types, char buffer[],
 	int flags, int width, int precision, int size)
 {
-	char *str;
-	int i, count = 0;
+	/* variable declaration and initialization */
+	int i_index;
+	int counter = 0;
+	char *s;
 
+	/* type casting */
 	UNUSED(buffer);
 	UNUSED(flags);
 	UNUSED(width);
 	UNUSED(size);
 
-	str = va_arg(types, char *);
+	s = va_arg(types, char *); /* iterating through va_list types*/
 
-	if (str == NULL)
+	/* checking for the null value */
+	if (s == NULL)
 	{
 		UNUSED(precision);
-
-		str = ")Null(";
+		s = ")Null(";
 	}
-	for (i = 0; str[i]; i++)
-		;
-
-	for (i = i - 1; i >= 0; i--)
+	for (i_index = 0; s[i_index]; i_index++)
 	{
-		char z = str[i];
-
-		write(1, &z, 1);
-		count++;
+		;
 	}
-	return (count);
+	for (i_index = i_index - 1; i_index >= 0; i_index--)
+	{
+		char ch = s[i_index]; /* variable initialization*/
+
+		write(1, &ch, 1);/* output 1 byte to*/
+		counter++;
+	}
+	return (counter);
 }
+
 /**
- * print_rot13string - Print a string in rot13.
- * @types: Lista of arguments
- * @buffer: Buffer array to handle print
- * @flags:  Calculates active flags
- * @width: get width
- * @precision: Precision specification
- * @size: Size specifier
- * Return: Numbers of chars printed
- * this will print a string in rot13
+ * print_rot13string - function that prints a string in rot13
+ * @types: variadic function List
+ * @buffer: container for formatted output
+ * @flags:  integer that gets the active flags that control string formatting
+ * @width: this is the width specifier
+ * @precision: this is the precision specifier
+ * @size: this is the size specifier
+ * main contribution: partner 1
+ *
+ * Return: unsigned int of non-printable characters
  */
+
 int print_rot13string(va_list types, char buffer[],
 	int flags, int width, int precision, int size)
 {
-	char x;
-	char *str;
-	unsigned int i, j;
-	int count = 0;
+	int counter;
+	char c;
+	char *s;
+	unsigned int index1 = 0, index2;
 	char in[] = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz";
 	char out[] = "NOPQRSTUVWXYZABCDEFGHIJKLMnopqrstuvwxyzabcdefghijklm";
 
-	str = va_arg(types, char *);
+	s = va_arg(types, char *); /* iterating over va_list types */
+	/* macro expansion and casting*/
 	UNUSED(buffer);
 	UNUSED(flags);
-	UNUSED(width);
 	UNUSED(precision);
 	UNUSED(size);
+	UNUSED(width);
 
-	if (str == NULL)
-		str = "(AHYY)";
-	for (i = 0; str[i]; i++)
+	/* checking for null value*/
+	if (s == NULL)
+		s = "(AHYY)";
+	while (s[index1])
 	{
-		for (j = 0; in[j]; j++)
+		for (index2 = 0; in[index2]; index2++)
 		{
-			if (in[j] == str[i])
+			if (in[index2] == s[index1])
 			{
-				x = out[j];
-				write(1, &x, 1);
-				count++;
+				c = out[index2];
+				write(1, &c, 1); /* output 1 byte to stdout*/
+				counter++;
 				break;
 			}
 		}
-		if (!in[j])
+		if (!in[index2])
 		{
-			x = str[i];
-			write(1, &x, 1);
-			count++;
+			c = s[index1];
+			write(1, &c, 1); /* output 1 byte to stdout */
+			counter++;
 		}
+		index1++;
 	}
-	return (count);
+	return (counter);
 }

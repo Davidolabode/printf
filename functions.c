@@ -1,188 +1,203 @@
+/* Title: functions.c */
+/* include header files */
 #include "main.h"
 
-
 /**
- * print_char - Prints a char
- * @types: List a of arguments
- * @buffer: Buffer array to handle print
- * @flags:  Calculates active flags
- * @width: Width
- * @precision: Precision specification
- * @size: Size specifier
- * Return: Number of chars printed
- * this is to print a char.
+ * print_int - function that print an int
+ * @types: variadic function List
+ * @buffer: container for formatted output
+ * @flags:  integer that gets the active flags that control string formatting
+ * @width: this is the width specifier
+ * @precision: this is the precision specifier
+ * @size: this is the size specifier
+ * main contribution: partner 1
+ *
+ * Return: percentage sign printed
  */
-int print_char(va_list types, char buffer[],
+
+int print_int(va_list types, char buffer[],
 	int flags, int width, int precision, int size)
 {
-	char c = va_arg(types, int);
+	/* declaring and initializing variables */
+	int is_neg = 0, index = BUFF_SIZE - 2;
+	long int num = va_arg(types, long int); /* iterating over va_list type */
+	unsigned long int numb;
 
-	return (handle_write_char(c, buffer, flags, width, precision, size));
+	num = convert_size_number(num, size);
+	if (num == 0)
+		buffer[index--] = '0';
+	buffer[BUFF_SIZE - 1] = '\0';
+	numb = (unsigned long int)num;
+
+	if (num < 0)
+	{
+		numb = (unsigned long int)((-1) * num);
+		is_neg = 1;
+	}
+
+	while (numb > 0)
+	{
+		buffer[index--] = (numb % 10) + '0';
+		numb /= 10;
+	}
+	index++;
+	return (write_number(is_neg, index, buffer, flags, width, precision, size));
 }
+
 /**
- * print_string - Prints a string
- * @types: List a of arguments
- * @buffer: Buffer array to handle print
- * @flags:  Calculates active flags
- * @width: get width.
- * @precision: Precision specification
- * @size: Size specifier
- * Return: Number of chars printed
- * this is to print a string
+ * print_string - function that prints a string
+ * @types: variadic function List
+ * @buffer: container for formatted output
+ * @flags:  integer that gets the active flags that control string formatting
+ * @width: this is the width specifier
+ * @precision: this is the precision specifier
+ * @size: this is the size specifier
+ * main contribution: partner 1
+ *
+ * Return: string printed
  */
+
 int print_string(va_list types, char buffer[],
 	int flags, int width, int precision, int size)
 {
-	int length = 0, i;
-	char *str = va_arg(types, char *);
+	/* declaring and initializing variables */
+	int index, len = 0;
+	char *s = va_arg(types, char *); /* iterating over va_list types */
 
+	/* macro expansion */
 	UNUSED(buffer);
 	UNUSED(flags);
-	UNUSED(width);
 	UNUSED(precision);
 	UNUSED(size);
-	if (str == NULL)
+	UNUSED(width);
+
+	/* checking for null value */
+	if (s == NULL)
 	{
-		str = "(null)";
+		s = "(null)";
 		if (precision >= 6)
-			str = "      ";
+			s = "      ";
 	}
-
-	while (str[length] != '\0')
-		length++;
-
-	if (precision >= 0 && precision < length)
-		length = precision;
-
-	if (width > length)
+	while (s[len] != '\0')
+		len += 1;
+	if (precision >= 0 && precision < len)
+		len = precision;
+	if (width > len)
 	{
-		if (flags & F_MINUS)
+		if (flags & MINUS_FLAG)
 		{
-			write(1, &str[0], length);
-			for (i = width - length; i > 0; i--)
-				write(1, " ", 1);
+			write(1, &s[0], len);
+			for (index = width - len; index > 0; index--)
+				write(1, " ", 1); /* output 1 byte to stdout */
 			return (width);
 		}
 		else
 		{
-			for (i = width - length; i > 0; i--)
-				write(1, " ", 1);
-			write(1, &str[0], length);
+			for (index = width - len; index > 0; index--)
+				write(1, " ", 1); /* output 1 byte to stdout */
+			write(1, &s[0], len); /* output len byte to stdout */
 			return (width);
 		}
 	}
-
-	return (write(1, str, length));
+	return (write(1, s, len)); /* output len byte to stdout */
 }
+
 /**
- * print_percent - Prints a percent sign
- * @types: Lista of arguments
- * @buffer: Buffer array to handle print
- * @flags:  Calculates active flags
- * @width: get width.
- * @precision: Precision specification
- * @size: Size specifier
- * Return: Number of chars printed
- * this is to print percents sign
+ * print_char - function that prints a char
+ * @types: variadic function List
+ * @buffer: container for formatted output
+ * @flags:  integer that gets the active flags that control string formatting
+ * @width: this is the width specifier
+ * @precision: this is the precision specifier
+ * @size: this is the size specifier
+ * main contribution: partner 1
+ *
+ * Return: character printed
  */
+
+int print_char(va_list types, char buffer[],
+	int flags, int width, int precision, int size)
+{
+	/* declaring and initializing the list*/
+	char char_c = va_arg(types, int);
+
+	return (handle_write_char(char_c, buffer, flags, width, precision, size));
+}
+
+/**
+ * print_percent - function that prints percent sign
+ * @types: variadic function List
+ * @buffer: container for formatted output
+ * @flags:  integer that gets the active flags that control string formatting
+ * @width: this is the width specifier
+ * @precision: this is the precision specifier
+ * @size: this is the size specifier
+ * main contribution: partner 1
+ *
+ * Return: percentage sign printed
+ */
+
 int print_percent(va_list types, char buffer[],
 	int flags, int width, int precision, int size)
 {
+	/* macro expansion */
 	UNUSED(types);
 	UNUSED(buffer);
 	UNUSED(flags);
-	UNUSED(width);
 	UNUSED(precision);
 	UNUSED(size);
-	return (write(1, "%%", 1));
+	UNUSED(width);
+
+	return (write(1, "%%", 1)); /* output 1 byte to stdout */
 }
 
 /**
- * print_int - Print int
- * @types: Lista of arguments
- * @buffer: Buffer array to handle print
- * @flags:  Calculates active flags
- * @width: get width.
- * @precision: Precision specification
- * @size: Size specifier
- * Return: Number of chars printed
- * this is to print int
+ * print_binary - function that prints a binary
+ * @types: variadic function List
+ * @buffer: container for formatted output
+ * @flags:  integer that gets the active flags that control string formatting
+ * @width: this is the width specifier
+ * @precision: this is the precision specifier
+ * @size: this is the size specifier
+ * main contribution: partner 1
+ *
+ * Return: binary printed
  */
-int print_int(va_list types, char buffer[],
-	int flags, int width, int precision, int size)
-{
-	int i = BUFF_SIZE - 2;
-	int is_negative = 0;
-	long int n = va_arg(types, long int);
-	unsigned long int num;
 
-	n = convert_size_number(n, size);
-
-	if (n == 0)
-		buffer[i--] = '0';
-
-	buffer[BUFF_SIZE - 1] = '\0';
-	num = (unsigned long int)n;
-
-	if (n < 0)
-	{
-		num = (unsigned long int)((-1) * n);
-		is_negative = 1;
-	}
-
-	while (num > 0)
-	{
-		buffer[i--] = (num % 10) + '0';
-		num /= 10;
-	}
-
-	i++;
-
-	return (write_number(is_negative, i, buffer, flags, width, precision, size));
-}
-
-/**
- * print_binary - Prints an unsigned number
- * @types: Lista of arguments
- * @buffer: Buffer array to handle print
- * @flags:  Calculates active flags
- * @width: get width.
- * @precision: Precision specification
- * @size: Size specifier
- * Return: Numbers of char printed.
- * this is to print an unsigned number.
- */
 int print_binary(va_list types, char buffer[],
 	int flags, int width, int precision, int size)
-{
-	unsigned int n, m, i, sum;
-	unsigned int a[32];
-	int count;
+{ /* declare variables */
+	int counter;
+	unsigned int add, index = 0, bin[32], num = va_arg(types, unsigned int);
+	unsigned int mul = 2147483648;
 
+	/* macro expansion */
 	UNUSED(buffer);
 	UNUSED(flags);
-	UNUSED(width);
 	UNUSED(precision);
 	UNUSED(size);
+	UNUSED(width);
 
-	n = va_arg(types, unsigned int);
-	m = 2147483648; /* (2 ^ 31) */
-	a[0] = n / m;
-	for (i = 1; i < 32; i++)
+	bin[0] = num / mul;
+	while (index < 32)
 	{
-		m /= 2;
-		a[i] = (n / m) % 2;
+		mul /= 2;
+		bin[index] = (num / mul) % 2;
+		index++;
 	}
-	for (i = 0, sum = 0, count = 0; i < 32; i++)
+	index = 0;
+	for (index = 0, add = 0, counter = 0; index < 32; index++)
 	{
-		sum += a[i];
-		if (sum || i == 31)
+		/*  */
+		add = add + bin[index];
+		if (add || index == 31)
 		{
-			char z = '0' + a[i];
+			/* declaring and initializing ch */
+			char ch = '0' + bin[index];
 
-			write(1, &z, 1);
-			count++;
+			write(1, &ch, 1);/* output 1 byte to stdout */
+			counter++;
 		}
 	}
-	return (count);
+	return (counter);
 }

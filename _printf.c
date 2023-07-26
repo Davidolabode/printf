@@ -1,68 +1,74 @@
+/* Title: printf.c */
 #include "main.h"
-
-void print_buffer(char buffer[], int *buff_ind);
+#include <unistd.h>
 
 /**
- * _printf - Printf function
- * @format: format.
- * Return: Printed chars.
- * pointer.
+ * our_printer - function that prints characters in a hold/buffer
+ * @buff: container that holds the array of characters
+ * @current_buff: current index in the buffer
+ * main contributor - partner 1
+ *
+ * Return: Nothing!
  */
-int _printf(const char *format, ...)
+
+void our_printer(char buff[], int *current_buff)
 {
-	int i, printed = 0, printed_chars = 0;
-	int flags, width, precision, size, buff_ind = 0;
-	va_list list;
-	char buffer[BUFF_SIZE];
-
-	if (format == NULL)
-		return (-1);
-
-	va_start(list, format);
-
-	for (i = 0; format && format[i] != '\0'; i++)
+	if (*current_buff > 0)
 	{
-		if (format[i] != '%')
-		{
-			buffer[buff_ind++] = format[i];
-			if (buff_ind == BUFF_SIZE)
-				print_buffer(buffer, &buff_ind);
-			/* write(1, &format[i], 1);*/
-			printed_chars++;
-		}
-		else
-		{
-			print_buffer(buffer, &buff_ind);
-			flags = get_flags(format, &i);
-			width = get_width(format, &i, list);
-			precision = get_precision(format, &i, list);
-			size = get_size(format, &i);
-			++i;
-			printed = handle_print(format, &i, list, buffer,
-				flags, width, precision, size);
-			if (printed == -1)
-				return (-1);
-			printed_chars += printed;
-		}
+		/* 0 = stdin, 1 = stdout, 2 = stderr */
+		write(1, &buff[0], *current_buff); /* writes to stdout */
 	}
-
-	print_buffer(buffer, &buff_ind);
-
-	va_end(list);
-
-	return (printed_chars);
+	/* resetting the buffer index for another operation */
+	*current_buff = 0;
 }
 
 /**
- * print_buffer - Prints the contents of the buffer if it exist
- * @buffer: Array of chars
- * @buff_ind: Index at which to add next char, represents the length.
- * return
+ * _printf - function that produces output according to a format
+ * @format: a character string and fixed argument in the variadic function
+ * main contributor - partner 1
+ *
+ * Return: prints or -1 if error
  */
-void print_buffer(char buffer[], int *buff_ind)
-{
-	if (*buff_ind > 0)
-		write(1, &buffer[0], *buff_ind);
 
-	*buff_ind = 0;
+int _printf(const char *format, ...)
+{
+	/* declaring and initializing variables */
+	va_list xlist; /* initializing the variadic list */
+	char buff[BUFF_SIZE];
+	int index, prints = 0, print_out = 0, current_buff = 0, precision, wdt, siz;
+	int f;
+
+	/* checking for error */
+	if (format == NULL)
+	{
+		return (-1);
+	}
+	/* starting the iterative argument of va_list xlist */
+	va_start(xlist, format);
+	while (format && format[index])
+	{
+		if (format[index] != '%')
+		{
+			buff[current_buff++] = format[index];
+			if (current_buff == BUFF_SIZE)
+				our_printer(buff, &current_buff);
+			print_out += 1;
+		} else
+		{
+			our_printer(buff, &current_buff);
+			f = get_flags(format, &index), wdt = get_width(format,
+				&index, xlist);
+			precision = get_precision(format, &index, xlist),
+				siz = get_size(format, &index);
+			++index;
+			prints = handle_print(format, &index, xlist, buff, f,
+				wdt, precision, siz);
+			if (prints == -1)
+				return (-1);
+			print_out = print_out + prints;
+		} index++;
+	}
+	our_printer(buff, &current_buff);
+	va_end(xlist); /* free va_list */
+	return (print_out);
 }

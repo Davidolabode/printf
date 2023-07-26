@@ -60,6 +60,7 @@ int print_unsigned(va_list types, char buffer[],
 	int flags, int width, int precision, int size); /* unsigned int */
 int print_octal(va_list types, char buffer[],
 	int flags, int width, int precision, int size); /* octal */
+int is_digit(char c);
 int print_hexadecimal(va_list types, char buffer[],
 	int flags, int width, int precision, int size); /* Hexa-decimal */
 int print_hexa_upper(va_list types, char buffer[],

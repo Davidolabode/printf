@@ -1,35 +1,40 @@
+/* Title: get_flag.c */
 #include "main.h"
 
 /**
- * get_flags - Calculates active flags
- * @format: Formatted string in which to print the arguments
- * @i: take a parameter.
- * Return: Flags:
- * this will print and calculates active flags
+ * get_flags - function that calculates the active flags present
+ * @format: string format which to print the arguments
+ * @i: integer pointer
+ * main contributor: partner 1
+ *
+ * Return: value of flags
  */
+
 int get_flags(const char *format, int *i)
 {
-	/* - + 0 # ' ' */
-	/* 1 2 4 8  16 */
-	int j, curr_i;
-	int flags = 0;
-	const char FLAGS_CH[] = {'-', '+', '0', '#', ' ', '\0'};
-	const int FLAGS_ARR[] = {F_MINUS, F_PLUS, F_ZERO, F_HASH, F_SPACE, 0};
+	/* declare and initialize variables/flags ("-"" "+" "0" "#" "' '") */
+	int index1 = 0, index2, flags = 0;
+	const int ARRAY_FLAGS[] = {MINUS_FLAG, PLUS_FLAG, ZERO_FLAG,
+		HASH_FLAG, SPACE_FLAG};
+	const char CHAR_FLAGS[] = {'-', '+', '0', '#', ' ', '\0'};
 
-	for (curr_i = *i + 1; format[curr_i] != '\0'; curr_i++)
+	/* looping through */
+	while (format[index1] != '\0')
 	{
-		for (j = 0; FLAGS_CH[j] != '\0'; j++)
-			if (format[curr_i] == FLAGS_CH[j])
+		for (index2 = 0; CHAR_FLAGS[index2] != '\0'; index2++)
+		{
+			if (format[index1] == CHAR_FLAGS[index2])
 			{
-				flags |= FLAGS_ARR[j];
+				flags |= ARRAY_FLAGS[index2]; /* performing a bitwise OR */
 				break;
 			}
-
-		if (FLAGS_CH[j] == 0)
+		}
+		if (CHAR_FLAGS[index2] == 0)
+		{
 			break;
+		}
+		index1++;
 	}
-
-	*i = curr_i - 1;
-
+	*i = index1 - 1;
 	return (flags);
 }
