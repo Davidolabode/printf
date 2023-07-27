@@ -1,4 +1,4 @@
-/* Title: get_flag.c */
+/* Project title: get_flag.c */
 #include "main.h"
 
 /**
@@ -12,7 +12,7 @@
 
 int get_flags(const char *format, int *i)
 {
-	/* declare and initialize variables/flags ("-"" "+" "0" "#" "' '") */
+	/* declare and initialize the variables/flags ("-"" "+" "0" "#" "' '") */
 	int index1 = 0, index2, flags = 0;
 	const int ARRAY_FLAGS[] = {MINUS_FLAG, PLUS_FLAG, ZERO_FLAG,
 		HASH_FLAG, SPACE_FLAG};

@@ -1,4 +1,4 @@
-/* Title: functions1.c*/
+/* Project title: functions1.c*/
 /* include header file */
 #include "main.h"
 
@@ -18,7 +18,7 @@
 int print_unsigned(va_list types, char buffer[],
 	int flags, int width, int precision, int size)
 {
-	/* declaration and initialization of variables */
+	/* declaration and initialization of the variables */
 	unsigned long int n = va_arg(types, unsigned long int); /* iterating */
 	int index = BUFF_SIZE - 2;
 
@@ -46,7 +46,7 @@ int print_unsigned(va_list types, char buffer[],
  * @width: this is the width specifier
  * @precision: this is the precision specifier
  * @size: this is the size specifier
- * main contribution: partner 1
+ * main contributor: partner 1
  *
  * Return: unsigned number in octal notation
  */
@@ -90,7 +90,7 @@ int print_octal(va_list types, char buffer[],
  * @width: this is the width specifier
  * @precision: this is the precision specifier
  * @size: this is the size specifier
- * main contribution: partner 1
+ * main contributor: partner 1
  *
  * Return: unsigned number in hexadecimal notation
  */
@@ -114,7 +114,7 @@ int print_hexadecimal(va_list types, char buffer[],
  * @width: this is the width specifier
  * @precision: this is the precision specifier
  * @size: this is the size specifier
- * main contribution: partner 1
+ * main contributor: partner 1
  *
  * Return: unsigned number in upper hexadecimal notation
  */
@@ -139,7 +139,7 @@ int print_hexa_upper(va_list types, char buffer[],
  * @size: this is the size specifier
  * @map_to: Array of values to map the number to
  * @flag_ch: char that gives the active flags
- * main contribution: partner 1
+ * main contributor: partner 1
  *
  * Return: unsigned number in upper hexadecimal notation
  */

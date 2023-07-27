@@ -1,4 +1,4 @@
-/* Title: functions2.c */
+/* Project title: functions2.c */
 /* include header */
 #include "main.h"
 
@@ -11,7 +11,7 @@
  * @width: this is the width specifier
  * @precision: this is the precision specifier
  * @size: this is the size specifier
- * main contribution: partner 1
+ * main contributor: partner 1
  *
  * Return: unsigned number in upper hexadecimal notation
  */
@@ -117,7 +117,7 @@ int print_non_printable(va_list types, char buffer[],
  * @width: this is the width specifier
  * @precision: this is the precision specifier
  * @size: this is the size specifier
- * main contribution: partner 1
+ * main contributor: partner 1
  *
  * Return: unsigned int of non-printable characters
  */
@@ -166,7 +166,7 @@ int print_reverse(va_list types, char buffer[],
  * @width: this is the width specifier
  * @precision: this is the precision specifier
  * @size: this is the size specifier
- * main contribution: partner 1
+ * main contributor: partner 1
  *
  * Return: unsigned int of non-printable characters
  */

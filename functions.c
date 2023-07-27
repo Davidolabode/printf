@@ -1,4 +1,4 @@
-/* Title: functions.c */
+/* Project title: functions.c */
 /* include header files */
 #include "main.h"
 
@@ -10,7 +10,7 @@
  * @width: this is the width specifier
  * @precision: this is the precision specifier
  * @size: this is the size specifier
- * main contribution: partner 1
+ * main contributor: partner 1
  *
  * Return: percentage sign printed
  */
@@ -18,7 +18,7 @@
 int print_int(va_list types, char buffer[],
 	int flags, int width, int precision, int size)
 {
-	/* declaring and initializing variables */
+	/* declaring and initializing the variables */
 	int is_neg = 0, index = BUFF_SIZE - 2;
 	long int num = va_arg(types, long int); /* iterating over va_list type */
 	unsigned long int numb;

@@ -1,4 +1,4 @@
-/* Title: get_precision */
+/* Project title: get_precision */
 /* include header files */
 #include "main.h"
 
@@ -7,14 +7,14 @@
  * @format: string format used in printing the given argument
  * @i: List of arguments to be printed
  * @list: list of arguments
- * main contribution: partner 1
+ * main contributor: partner 1
  *
  * Return: Precision.
  */
 
 int get_precision(const char *format, int *i, va_list list)
 {
-	/* declaring and initializing variables */
+	/* declaring and initializing the variables */
 	int index1 = *i + 1, precision = -1;
 
 	/* checking for dot sign */

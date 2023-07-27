@@ -1,4 +1,4 @@
-/* Title: printf.c */
+/* Project title: printf.c */
 #include "main.h"
 #include <unistd.h>
 
@@ -38,7 +38,7 @@ int _printf(const char *format, ...)
 	int index, prints = 0, print_out = 0, current_buff = 0, precision, wdt, siz;
 	int f;
 
-	/* checking for error */
+	/* checking for errors if possible */
 	if (format == NULL)
 	{
 		return (-1);
