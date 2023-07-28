@@ -21,19 +21,24 @@ int get_size(const char *format, int *i)
 
 	/* setting the size modifier */
 	/* h sets 1, l sets to 2, else remains 0 (no size modifier present)*/
-	if (format[index] == 'h')
+	if (format[index] == 'l')
+	{
+		siz = LONG_SIZE; /*long integer */
+	}
+	else if (format[index] == 'h')
 	{
 		siz = SHORT_SIZE; /* short integer */
-	} else if (format[index] == 'l')
-	{
-		siz = LONG_SIZE; /* long integer*/
 	}
-	if (siz != 0)
+
+	/* checking for size modifier */
+
+	if (siz == 0)
 	{
-		*i = index;
-	} else
+		*i = index - 1;
+	}
+	else
 	{
-		*i = index - 1; /* ends at the current character */
+		*i = index; /* ends at the current character */
 	}
 	return (siz);
 }

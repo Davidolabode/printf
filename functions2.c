@@ -1,4 +1,4 @@
-/* Project title: functions2.c */
+/* Title: functions2.c */
 /* include header */
 #include "main.h"
 
@@ -11,7 +11,7 @@
  * @width: this is the width specifier
  * @precision: this is the precision specifier
  * @size: this is the size specifier
- * main contributor: partner 1
+ * main contribution: partner 1
  *
  * Return: unsigned number in upper hexadecimal notation
  */
@@ -50,7 +50,8 @@ int print_pointer(va_list types, char buffer[],
 	if (flags & PLUS_FLAG)
 	{
 		char_extra = '+', len++;
-	} else if (flags & SPACE_FLAG)
+	}
+	else if (flags & SPACE_FLAG)
 	{
 		char_extra = ' ', len++;
 	}
@@ -97,7 +98,8 @@ int print_non_printable(va_list types, char buffer[],
 		if (is_printable(s[index1]))
 		{
 			buffer[index1 + off_set] = s[index1];
-		} else
+		}
+		else
 		{
 			off_set += append_hexa_code(s[index1], buffer, index1 + off_set);
 		}
@@ -117,7 +119,7 @@ int print_non_printable(va_list types, char buffer[],
  * @width: this is the width specifier
  * @precision: this is the precision specifier
  * @size: this is the size specifier
- * main contributor: partner 1
+ * main contribution: partner 1
  *
  * Return: unsigned int of non-printable characters
  */
@@ -166,7 +168,7 @@ int print_reverse(va_list types, char buffer[],
  * @width: this is the width specifier
  * @precision: this is the precision specifier
  * @size: this is the size specifier
- * main contributor: partner 1
+ * main contribution: partner 1
  *
  * Return: unsigned int of non-printable characters
  */
@@ -175,9 +177,8 @@ int print_rot13string(va_list types, char buffer[],
 	int flags, int width, int precision, int size)
 {
 	int counter;
-	char c;
-	char *s;
-	unsigned int index1 = 0, index2;
+	char c, *s;
+	unsigned int index1, index2;
 	char in[] = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz";
 	char out[] = "NOPQRSTUVWXYZABCDEFGHIJKLMnopqrstuvwxyzabcdefghijklm";
 
@@ -192,7 +193,7 @@ int print_rot13string(va_list types, char buffer[],
 	/* checking for null value*/
 	if (s == NULL)
 		s = "(AHYY)";
-	while (s[index1])
+	for (index1 = 0; (s[index1]); index1++)
 	{
 		for (index2 = 0; in[index2]; index2++)
 		{
@@ -210,7 +211,6 @@ int print_rot13string(va_list types, char buffer[],
 			write(1, &c, 1); /* output 1 byte to stdout */
 			counter++;
 		}
-		index1++;
 	}
 	return (counter);
 }

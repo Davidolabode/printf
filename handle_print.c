@@ -22,7 +22,7 @@ int handle_print(const char *fmt, int *ind, va_list list, char buffer[],
 	int flags, int width, int precision, int size)
 {
 	/* declaring and initializing variables */
-	int length_exp = 0, prints = -1, index = 0;
+	int length_exp = 0, prints = -1, index;
 
 	formt_t formt_types[] = {
 		{'c', print_char}, {'s', print_string}, {'%', print_percent},
@@ -31,12 +31,11 @@ int handle_print(const char *fmt, int *ind, va_list list, char buffer[],
 		{'X', print_hexa_upper}, {'p', print_pointer}, {'S', print_non_printable},
 		{'r', print_reverse}, {'R', print_rot13string}, {'\0', NULL}
 	};
-
-	while (formt_types[index].formt) /* looping through the  format types*/
+	/* looping through the  format types*/
+	for (index = 0; (formt_types[index].formt); index++)
 	{
 		if (fmt[*ind] == formt_types[index].formt)
 			return (formt_types[index].fn(list, buffer, flags, width, precision, size));
-		index += 1;
 	}
 	if (formt_types[index].formt == '\0') /* if format character unrecognised */
 	{
@@ -46,7 +45,8 @@ int handle_print(const char *fmt, int *ind, va_list list, char buffer[],
 		if (fmt[*ind - 1] == ' ')
 		{
 			length_exp = length_exp + write(1, " ", 1); /* outputs 1 byte to stdout */
-		} else if (width)
+		}
+		else if (width)
 		{
 			--(*ind);
 			while (fmt[*ind] != ' ' && fmt[*ind] != '%')

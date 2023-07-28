@@ -19,7 +19,7 @@ int get_flags(const char *format, int *i)
 	const char CHAR_FLAGS[] = {'-', '+', '0', '#', ' ', '\0'};
 
 	/* looping through */
-	while (format[index1] != '\0')
+	for (index1 = *i + 1; format[index1] != '\0'; index1++)
 	{
 		for (index2 = 0; CHAR_FLAGS[index2] != '\0'; index2++)
 		{
@@ -33,7 +33,6 @@ int get_flags(const char *format, int *i)
 		{
 			break;
 		}
-		index1++;
 	}
 	*i = index1 - 1;
 	return (flags);

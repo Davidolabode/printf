@@ -1,4 +1,4 @@
-/* Project title: printf.c */
+/* Title: printf.c */
 #include "main.h"
 #include <unistd.h>
 
@@ -38,14 +38,14 @@ int _printf(const char *format, ...)
 	int index, prints = 0, print_out = 0, current_buff = 0, precision, wdt, siz;
 	int f;
 
-	/* checking for errors if possible */
+	/* checking for error */
 	if (format == NULL)
 	{
 		return (-1);
 	}
 	/* starting the iterative argument of va_list xlist */
 	va_start(xlist, format);
-	while (format && format[index])
+	for (index = 0; (format && format[index]) != '\0'; index++)
 	{
 		if (format[index] != '%')
 		{
@@ -53,7 +53,8 @@ int _printf(const char *format, ...)
 			if (current_buff == BUFF_SIZE)
 				our_printer(buff, &current_buff);
 			print_out += 1;
-		} else
+		}
+		else
 		{
 			our_printer(buff, &current_buff);
 			f = get_flags(format, &index), wdt = get_width(format,
@@ -66,7 +67,7 @@ int _printf(const char *format, ...)
 			if (prints == -1)
 				return (-1);
 			print_out = print_out + prints;
-		} index++;
+		}
 	}
 	our_printer(buff, &current_buff);
 	va_end(xlist); /* free va_list */

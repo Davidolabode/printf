@@ -1,4 +1,4 @@
-/* Project title: functions.c */
+/* Title: functions.c */
 /* include header files */
 #include "main.h"
 
@@ -10,7 +10,7 @@
  * @width: this is the width specifier
  * @precision: this is the precision specifier
  * @size: this is the size specifier
- * main contributor: partner 1
+ * main contribution: partner 1
  *
  * Return: percentage sign printed
  */
@@ -18,23 +18,23 @@
 int print_int(va_list types, char buffer[],
 	int flags, int width, int precision, int size)
 {
-	/* declaring and initializing the variables */
+	/* declaring and initializing variables */
 	int is_neg = 0, index = BUFF_SIZE - 2;
 	long int num = va_arg(types, long int); /* iterating over va_list type */
 	unsigned long int numb;
 
 	num = convert_size_number(num, size);
 	if (num == 0)
+	{
 		buffer[index--] = '0';
+	}
 	buffer[BUFF_SIZE - 1] = '\0';
 	numb = (unsigned long int)num;
-
 	if (num < 0)
 	{
 		numb = (unsigned long int)((-1) * num);
 		is_neg = 1;
 	}
-
 	while (numb > 0)
 	{
 		buffer[index--] = (numb % 10) + '0';
@@ -168,7 +168,7 @@ int print_binary(va_list types, char buffer[],
 	int flags, int width, int precision, int size)
 { /* declare variables */
 	int counter;
-	unsigned int add, index = 0, bin[32], num = va_arg(types, unsigned int);
+	unsigned int add, index, bin[32], num;
 	unsigned int mul = 2147483648;
 
 	/* macro expansion */
@@ -178,14 +178,15 @@ int print_binary(va_list types, char buffer[],
 	UNUSED(size);
 	UNUSED(width);
 
+	/* begin iterative argument */
+	num = va_arg(types, unsigned int);
 	bin[0] = num / mul;
-	while (index < 32)
+	for (index = 1; index < 32; index++)
 	{
 		mul /= 2;
 		bin[index] = (num / mul) % 2;
 		index++;
 	}
-	index = 0;
 	for (index = 0, add = 0, counter = 0; index < 32; index++)
 	{
 		/*  */

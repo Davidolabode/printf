@@ -34,11 +34,11 @@ int handle_write_char(char c, char buffer[],
 	if (width > 1)
 	{
 		buffer[BUFF_SIZE - 1] = '\0';
-		index = 0;
-		while (index < width)
+
+		for (index = 0; (index < width - 1); index++)
 		{
 			buffer[BUFF_SIZE - index - 2] = pad;
-			index += 1;
+
 		}
 		if (flags & MINUS_FLAG)
 		{
@@ -52,7 +52,6 @@ int handle_write_char(char c, char buffer[],
 	}
 	return (write(1, &buffer[0], 1)); /* output 1 byte to stdout */
 }
-
 
 /**
  * write_number - function that prints a required string
@@ -195,15 +194,17 @@ int write_unsgnd(int is_negative, int ind,
 		pad = '0';
 	if (width > len)
 	{
-		index = 0;
-		while (index < width - len)
+		/* width greater than length */
+		for (index = 0; (index < width - len); index++)
 		{
 			buffer[index] = pad;
 		}
 		buffer[index] = '\0';
 		/* extra character to the left */
 		if (flags & MINUS_FLAG)
+		{
 			return (write(1, &buffer[ind], len) + write(1, &buffer[0], index));
+		}
 		else
 			return (write(1, &buffer[0], index) + write(1, &buffer[ind], len));
 	}
@@ -235,8 +236,11 @@ int write_pointer(char buffer[], int ind, int length,
 	if (width > length)
 	{
 		for (index1 = 3; index1 < width - length + 3; index1++)
+		{
 			buffer[index1] = padd;
+		}
 		buffer[index1] = '\0';
+
 		if (flags & MINUS_FLAG && padd == ' ')
 		{
 			buffer[--ind] = 'x', buffer[--ind] = '0';

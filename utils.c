@@ -6,11 +6,12 @@
  * @c: Char to be printed
  * main contribution: partner 2
  *
- * Return: 1 if c is printable, else return 0
+ * Return: if 1 c is printable, else return 0
  */
 
 int is_printable(char c)
 {
+	/* ASCII printable characters and some special characters */
 	if (c >= 32 && c < 127)
 	{
 		return (1); /* return 1 if c is printable */
@@ -54,6 +55,7 @@ int append_hexa_code(char ascii_code, char buffer[], int i)
 
 int is_digit(char c)
 {
+	/* decimal digits */
 	if (c >= 48 && c <= 57)
 	{
 		return (1); /* return 1 if c is a digit */
@@ -98,7 +100,8 @@ long int convert_size_unsgnd(unsigned long int num, int size)
 	if (size == LONG_SIZE)
 	{
 		return (num);
-	} else if (size == SHORT_SIZE)
+	}
+	else if (size == SHORT_SIZE)
 	{
 		return ((unsigned short)num);
 	}
